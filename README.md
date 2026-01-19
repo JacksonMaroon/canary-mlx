@@ -1,14 +1,33 @@
 # Canary MLX
 
-An implementation of Nvidia's Canary multitask ASR/AST models for Apple Silicon using MLX.
+State-of-the-art speech recognition on Apple Silicon.
+The first MLX port of NVIDIA's Canary-1B-v2 — the #1 ranked model on Hugging Face's Open ASR Leaderboard.
 
-## Installation
+## Why Canary MLX?
+
+- 🏆 Best-in-class accuracy — Canary tops Whisper, Parakeet, and other open ASR models
+- 🌍 25 languages + translation between English and 24 EU languages
+- 🍎 Native on Mac — Runs locally on M1/M2/M3/M4, no cloud, no NVIDIA GPU needed
+- ⚡ ~2x faster than NeMo on MPS, with ~3x less memory
+
+## Quick Start
 
 ```bash
 pip install -e .
+canary-mlx audio.wav --source-lang en --task transcribe
 ```
 
-## CLI Quick Start
+## Performance
+
+| Setup | 35s audio | Memory |
+| --- | --- | --- |
+| Canary MLX | 6.9s | 2.6 GB |
+| NeMo (CPU) | 10.7s | 7.8 GB |
+| NeMo (MPS) | 14.9s | 9.5 GB* |
+
+* MPS memory includes driver allocation; results vary by hardware and audio length.
+
+## CLI
 
 ```bash
 canary-mlx <audio_files> --source-lang en --target-lang en --task transcribe
@@ -17,8 +36,8 @@ canary-mlx <audio_files> --source-lang en --target-lang en --task transcribe
 Beam decoding example (beam size 4):
 
 ```bash
-canary-mlx audio.wav --model /path/to/canary-mlx/model \\
-  --source-lang en --target-lang en --task transcribe \\
+canary-mlx audio.wav --model /path/to/canary-mlx/model \
+  --source-lang en --target-lang en --task transcribe \
   --decoding beam --beam-size 4 --length-penalty 0.0 --max-generation-delta 50
 ```
 
@@ -49,18 +68,18 @@ Notes:
 ## Batch Inference
 
 ```bash
-canary-mlx batch /path/to/audio_dir --recursive \\
-  --model /path/to/canary-mlx/model \\
-  --source-lang en --target-lang en --task transcribe \\
+canary-mlx batch /path/to/audio_dir --recursive \
+  --model /path/to/canary-mlx/model \
+  --source-lang en --target-lang en --task transcribe \
   --output transcripts.csv
 ```
 
 ## Weight Mapping Report
 
 ```bash
-canary-mlx-diff \\
-  --nemo-ckpt /path/to/model_weights.ckpt \\
-  --mlx-config /path/to/canary-mlx/model/config.json \\
+canary-mlx-diff \
+  --nemo-ckpt /path/to/model_weights.ckpt \
+  --mlx-config /path/to/canary-mlx/model/config.json \
   --output weight_report.json
 ```
 
