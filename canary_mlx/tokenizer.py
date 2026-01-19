@@ -167,6 +167,14 @@ class CanaryTokenizer(AggregateTokenizer):
 
     def _tokenize_special_prompt(self, text: str) -> List[int]:
         ans = []
+        if text.startswith("▁"):
+            text = text[1:]
+        try:
+            dummy_prefix = self.token_to_id("▁", lang_id=CANARY_SPECIAL_TOKENIZER)
+        except Exception:
+            dummy_prefix = None
+        if dummy_prefix is not None:
+            ans.append(dummy_prefix)
         if text.startswith(CANARY2_BOCTX):
             ans.append(self.special_tokens[CANARY2_BOCTX])
             text = text[len(CANARY2_BOCTX) :]

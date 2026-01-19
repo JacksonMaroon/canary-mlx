@@ -68,3 +68,7 @@ canary-mlx-diff \\
 
 - `canary-1b` uses a 24-layer FastConformer encoder and a 24-layer Transformer decoder.
 - The 32-layer encoder / 4-layer decoder variant corresponds to the `canary-1b-flash` family.
+
+## Known Limitations
+
+- Audio preprocessing is not bit-exact with NeMo.
