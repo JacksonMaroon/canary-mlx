@@ -204,6 +204,7 @@ class CanaryTokenizer(AggregateTokenizer):
         target_lang: str,
         task: str,
         pnc: bool | str = True,
+        prompt_text: Optional[str] = None,
         prompt_format: str = "canary",
     ) -> List[int]:
         if prompt_format not in ("canary", "canary2"):
@@ -226,20 +227,36 @@ class CanaryTokenizer(AggregateTokenizer):
                 return value
             return "<|pnc|>" if str(value).lower() in ("true", "1", "yes", "pnc") else "<|nopnc|>"
 
+        def _normalize_prompt_text(text: Optional[str]) -> str:
+            if text is None:
+                return ""
+            stripped = text.strip()
+            if not stripped:
+                return ""
+            if stripped[0].isspace() or stripped[0] == "<":
+                return stripped
+            return f" {stripped}"
+
         src = _normalize_lang(source_lang)
         tgt = _normalize_lang(target_lang)
         pnc_token = _normalize_pnc(pnc)
 
+        prompt_text = _normalize_prompt_text(prompt_text)
+
         if prompt_format == "canary2":
             prompt = (
-                f"{CANARY2_BOCTX}{CANARY_BOS}"
+                f"{CANARY2_BOCTX}{prompt_text}{CANARY_BOS}"
                 f"<|emo:undefined|>{src}{tgt}{pnc_token}"
                 f"<|noitn|><|notimestamp|><|nodiarize|>"
             )
-        else:
-            task_token = _normalize_task(task)
-            prompt = f"{CANARY_BOS}{src}{task_token}{tgt}{pnc_token}"
-        return self.text_to_ids(prompt, CANARY_SPECIAL_TOKENIZER)
+            return self.text_to_ids(prompt, CANARY_SPECIAL_TOKENIZER)
+
+        task_token = _normalize_task(task)
+        prompt = f"{CANARY_BOS}{src}{task_token}{tgt}{pnc_token}"
+        prompt_ids = self.text_to_ids(prompt, CANARY_SPECIAL_TOKENIZER)
+        if prompt_text:
+            prompt_ids.extend(self.text_to_ids(prompt_text, target_lang))
+        return prompt_ids
 
 
 def _resolve_tokenizer_model_path(tokenizer_dir: Path) -> Path:

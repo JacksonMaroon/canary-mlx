@@ -214,6 +214,7 @@ class CanaryModel(nn.Module):
         target_lang: str,
         task: str = "transcribe",
         pnc: bool | str = True,
+        prompt: Optional[str] = None,
         max_new_tokens: Optional[int] = None,
         decoding_config: Union[DecodingConfig, SentenceConfig] = DecodingConfig(),
     ) -> List[AlignedResult]:
@@ -229,6 +230,7 @@ class CanaryModel(nn.Module):
             target_lang=target_lang,
             task=task,
             pnc=pnc,
+            prompt_text=prompt,
             prompt_format=self.prompt_format,
         )
         prompt_len = len(prompt_ids)
@@ -284,6 +286,7 @@ class CanaryModel(nn.Module):
         target_lang: str,
         task: str = "transcribe",
         pnc: bool | str = True,
+        prompt: Optional[str] = None,
         chunk_duration: Optional[float] = None,
         overlap_duration: float = 15.0,
         chunk_callback: Optional[Callable] = None,
@@ -301,6 +304,7 @@ class CanaryModel(nn.Module):
                 target_lang=target_lang,
                 task=task,
                 pnc=pnc,
+                prompt=prompt,
                 max_new_tokens=max_new_tokens,
                 decoding_config=decoding_config,
             )[0]
@@ -314,6 +318,7 @@ class CanaryModel(nn.Module):
                 target_lang=target_lang,
                 task=task,
                 pnc=pnc,
+                prompt=prompt,
                 max_new_tokens=max_new_tokens,
                 decoding_config=decoding_config,
             )[0]
@@ -336,6 +341,7 @@ class CanaryModel(nn.Module):
                 target_lang=target_lang,
                 task=task,
                 pnc=pnc,
+                prompt=prompt,
                 max_new_tokens=max_new_tokens,
                 decoding_config=decoding_config,
             )[0]
