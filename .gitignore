@@ -1,0 +1,15 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+*.nemo
+*.ckpt
+*.safetensors
+*.wav
+*.mp3
+batch_transcripts.csv
+canary-1b-v2-mlx/
+canary-1b-v2.nemo
+nemo-src/
+parakeet-mlx/
+samples/
