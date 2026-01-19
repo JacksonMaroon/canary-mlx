@@ -1,7 +1,8 @@
 # Canary MLX
 
 State-of-the-art speech recognition on Apple Silicon.
-The first MLX port of NVIDIA's Canary-1B-v2 — the #1 ranked model on Hugging Face's Open ASR Leaderboard.
+An MLX port of NVIDIA's Canary-1B-v2 — the #1 ranked model on Hugging Face's Open ASR Leaderboard.
+
 
 ## Why Canary MLX?
 
@@ -9,6 +10,7 @@ The first MLX port of NVIDIA's Canary-1B-v2 — the #1 ranked model on Hugging F
 - 🌍 25 languages + translation between English and 24 EU languages
 - 🍎 Native on Mac — Runs locally on M1/M2/M3/M4, no cloud, no NVIDIA GPU needed
 - ⚡ ~2x faster than NeMo on MPS, with ~3x less memory
+- ✅ Validated parity — Encoder/decoder outputs match NeMo within 1e-4
 
 ## Quick Start
 
